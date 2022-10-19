@@ -1,4 +1,5 @@
 const containerDiv = document.querySelector('.container');
+const dialogElement = document.querySelector('#single-country-modal');
 
 const baseURL = 'https://restcountries.com/v3.1';
 
@@ -29,6 +30,8 @@ fetchAllCounties()
         buttons.forEach((button) => {
             button.addEventListener('click', (event) => {
                 const currentButton = event.currentTarget;
+                dialogElement.showModal();
+                console.log(dialogElement)
 
                 const cca2 = currentButton.getAttribute('data-iso');
                 
