@@ -28,17 +28,38 @@ fetchAllCounties()
         const buttons = document.querySelectorAll('.country-button');
         
         buttons.forEach((button) => {
-            button.addEventListener('click', (event) => {
+            button.addEventListener('click', async (event) => {
                 const currentButton = event.currentTarget;
-                dialogElement.showModal();
-                console.log(dialogElement)
 
                 const cca2 = currentButton.getAttribute('data-iso');
                 
-                fetch(`${baseURL}/alpha/${cca2}`)
-                    .then(response => response.json())
-                    .then(data => console.log(data));
+                const response = await fetch(`${baseURL}/alpha/${cca2}`)
+                const data = await response.json();
+
+                fillDialogWithData(data[0]);
+                dialogElement.showModal();
+
+                const closeModalButton = document.querySelector('.close-button');
+                closeModalButton.addEventListener('click', () => dialogElement.close())
             })
         })
         
     });
+
+const fillDialogWithData = (country) => {
+    console.log(country)
+    dialogElement.innerHTML = `
+        <div class="dialog-inner-container">
+            <button class="close-button">
+                <span class="material-symbols-outlined">chevron_left</span>
+            </button>
+            <header>
+                <img width="100px" src="${country.coatOfArms.png}">
+                <div>
+                    <h1>${country.name.official}</h1>
+                    <p>${country.capital[0]}</p>
+                </div>
+            </header>
+        </div>
+    `
+}
